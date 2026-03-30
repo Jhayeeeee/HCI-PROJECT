@@ -1,0 +1,581 @@
+* {
+    box-sizing: border-box;
+}
+
+/* Typography overrides for headings */
+h1, h2, h3, h4, h5, h6, .portal-name, .university-name, .section-title {
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background-color: #f4f7f6; /* Soft modern background */
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(100deg, #0e0664 25%, #185690 100%);
+    color: #ffffff;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.portal-name {
+    font-size: 1.4em;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-button {
+    background: transparent;
+    color: rgba(244, 240, 240, 0.85);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95em;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-button.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+.nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+/* Profile Dropdown */
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-icon {
+    background: none;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    transition: border-color 0.3s;
+}
+
+.profile-icon:hover {
+    border-color: #fff;
+}
+
+.profile-icon img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.dropdown-content {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 180px;
+    box-shadow: 0px 10px 25px rgba(0,0,0,0.15);
+    z-index: 1;
+    right: 0;
+    top: 65px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.dropdown-content a {
+    color: #444;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95em;
+    font-weight: 500;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+}
+
+.dropdown-content a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-content a:hover {
+    background-color: #f8f9fa;
+    color: #003366;
+}
+
+.dropdown-content a:last-child:hover {
+    background-color: #fdf2f0;
+    color: #c0392b;
+}
+
+.profile-dropdown:hover .dropdown-content {
+    visibility: visible;
+    opacity: 1;
+    top: 50px;
+}
+
+/* Layout */
+.container {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex: 1;
+    width: 100%;
+}
+
+.welcome-section {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+.welcome-message {
+    font-size: 1.1em;
+    color: #666;
+    margin: 0;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+/* Cards */
+.election-card, .info-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* Primary Election Card */
+.election-header {
+    background: linear-gradient(135deg, #0055a4 0%, #0077cc 100%);
+    color: #ffffff;
+    padding: 25px 30px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.election-header h2 {
+    margin: 0;
+    font-size: 1.6em;
+    font-weight: 700;
+}
+
+.status-badge {
+    background-color: #fff;
+    color: #0055a4;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.upcoming {
+    background-color: #ffd700;
+    color: #856600;
+}
+
+.status-badge.ongoing {
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+.election-body {
+    padding: 30px;
+}
+
+.election-desc {
+    color: #555;
+    line-height: 1.7;
+    font-size: 1.05em;
+    margin-bottom: 25px;
+}
+
+/* Countdown */
+.countdown-container {
+    background-color: #f8f9fa;
+    border: 1px solid #eef0f2;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.countdown-container h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 1.1em;
+}
+
+.timer-boxes {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.time-box {
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    border-radius: 8px;
+    padding: 15px 10px;
+    min-width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.time-val {
+    font-size: 2.2em;
+    font-weight: 800;
+    color: #003366;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.time-label {
+    font-size: 0.8em;
+    text-transform: uppercase;
+    color: #777;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.target-date {
+    margin: 0;
+    font-size: 0.95em;
+    color: #666;
+    font-weight: 500;
+}
+
+.voting-open-msg {
+    font-size: 1.8em;
+    font-weight: 800;
+    color: #2ecc71;
+    margin: 20px 0;
+}
+
+.vote-button{
+    background-color: #bdc3c7;
+    color: #fff;
+    border: none;
+    padding: 15px 35px;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: 700;
+    cursor: not-allowed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 270px;
+    transition: all 0.3s ease;
+}
+
+.vote-button.active-vote {
+    background: linear-gradient(135deg, #86281e 0%, #a01f14 100%);
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(231, 76, 60, 0.4);
+}
+
+.vote-button.active-vote:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.5);
+}
+
+/* Side Content */
+.side-content {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.info-card {
+    padding: 25px;
+}
+
+.info-card h3 {
+    margin: 0 0 20px 0;
+    color: #003366;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2px solid #f0f2f5;
+    padding-bottom: 12px;
+}
+
+.info-card h3 i {
+    color: #e74c3c;
+}
+
+.announcement-list, .guidelines-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.announcement-list li {
+    margin-bottom: 15px;
+    border-left: 3px solid #0055a4;
+    padding-left: 15px;
+}
+
+.announcement-list .date {
+    display: block;
+    font-size: 0.8em;
+    color: #888;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.announcement-list p {
+    margin: 0;
+    font-size: 0.95em;
+    color: #444;
+    line-height: 1.5;
+}
+
+.guidelines-list li {
+    margin-bottom: 12px;
+    font-size: 0.95em;
+    color: #444;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+}
+
+.guidelines-list i {
+    color: #2ecc71;
+    margin-top: 3px;
+}
+
+/* Footer */
+.footer {
+    background-color: #ffffff;
+    border-top: 1px solid #eef0f2;
+    padding: 20px;
+    text-align: center;
+    color: #777;
+    font-size: 0.9em;
+    margin-top: auto;
+}
+
+/* Dynamic Candidates Section from Admin Panel */
+.candidates-wrapper {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 2px solid #eef0f2;
+}
+
+.candidates-wrapper .section-title {
+    color: #003366;
+    margin-bottom: 30px;
+    font-size: 1.8em;
+    font-weight: 800;
+}
+
+.candidates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.candidate-public-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 5px solid #0055a4;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.winner-badge {
+    position: center;
+    top: 10px;
+    color: #e6090c;
+    font-size: 1em;
+    font-weight: 700;
+    padding: 5px 35px;
+    margin-bottom: 7px;
+}
+
+.cand-avatar img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    border: 4px solid #f4f7f6;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.cand-info h4 {
+    margin: 0 0 8px 0;
+    font-size: 1.3em;
+    color: #333;
+    font-weight: 700;
+}
+
+.cand-pos {
+    display: block;
+    color: #e74c3c;
+    font-weight: 800;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.cand-party {
+    display: inline-block;
+    background: #f0f2f5;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    color: #555;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+.college{
+    font-family: italic;
+    display: block;
+    font-size: 1em;
+    color: #13130e;
+    font-weight: 500;
+    margin-bottom: 15px;
+    
+}
+
+.cand-quote {
+    font-size: 0.95em;
+    color: #666;
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0;
+    position: relative;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .university-name {
+        font-size: 1.8em;
+    }
+
+    .election-header h2 {
+        font-size: 1.3em;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .timer-boxes {
+        flex-wrap: wrap;
+    }
+    
+    .time-box {
+        min-width: 70px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px 15px;
+    }
+
+    .PLM-LOGO {
+        width: 45px;
+        height: 45px;
+    }
+
+    .portal-name {
+        font-size: 1.1em;
+    }
+
+    .university-name {
+        font-size: 1.4em;
+    }
+    
+    .time-val {
+        font-size: 1.8em;
+    }
+}

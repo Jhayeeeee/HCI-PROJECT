@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting System Portal</title>
+    <!-- Import Modern Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="mainpage.css">
+</head>
+<body>
+    <div class="landing-container">
+        <div class="landing-header">
+            <h2>Welcome to the Voting System</h2>
+            <p>Please choose your portal to continue.</p>
+        </div>
+
+        <div class="cards-wrapper">
+            <!-- Student Card -->
+            <a href="Login.html" class="portal-card student-card">
+                <div class="card-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <h3>Student Portal</h3>
+                <p>Login to cast your vote and view results.</p>
+                <div class="card-action">
+                    <span>Enter <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </a>
+
+            <!-- Admin Card -->
+            <a href="admin-login.html" class="portal-card admin-card">
+                <div class="card-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3>Admin Portal</h3>
+                <p>Manage candidates, election status, and announcements.</p>
+                <div class="card-action">
+                    <span>Enter <i class="fas fa-arrow-right"></i></span>
+                </div>
+            </a>
+        </div>
+        
+        <div class="landing-footer">
+            <p>&copy; 2026 Simple Voting System. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

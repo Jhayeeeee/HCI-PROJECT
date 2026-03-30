@@ -1,0 +1,110 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #003366; 
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+}
+
+.landing-container {
+    width: 100%;
+    max-width: 900px;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.landing-header {
+    margin-bottom: 50px;
+}
+
+.landing-header h2 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: #f6f7f7;
+    font-weight: bold;
+}
+
+.landing-header p {
+    font-size: 1em;
+    color: #f6f7f7;
+}
+
+.cards-wrapper {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.portal-card {
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 30px;
+    width: 320px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+}
+
+.portal-card:hover {
+    background: #ffe72f;
+    border-color: #aaa;
+}
+
+.card-icon {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.student-card .card-icon {
+    color: #0055a4;
+}
+
+.admin-card .card-icon {
+    color: #e74c3c;
+}
+
+.portal-card h3 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    color: #003366;
+}
+
+.portal-card p {
+    font-size: 0.95em;
+    color: #666;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.card-action {
+    font-weight: bold;
+    color: #003366;
+}
+
+.landing-footer {
+    margin-top: 50px;
+    color: #888;
+    font-size: 0.85em;
+}
+
+@media (max-width: 768px) {
+    .cards-wrapper {
+        gap: 20px;
+    }
+    .portal-card {
+        width: 100%;
+        max-width: 350px;
+    }
+}

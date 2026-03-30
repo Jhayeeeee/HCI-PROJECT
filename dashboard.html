@@ -3,9 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Simple Voting System - Dashboard</title>
+    <!-- Import Modern Font (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
-    <nav
+    <div class="header">
+        <div class="header-left">
+            <span class="portal-name">Simple Voting System</span>
+        </div>
+        <div class="header-right">
+            <a href="dashboard.html" class="nav-button active" style="text-decoration:none;">DASHBOARD</a>
+            <a href="candidates.html" class="nav-button" style="text-decoration:none;">CANDIDATES</a>
+            <a href="results.html" class="nav-button" style="text-decoration:none;">RESULTS</a>
+            
+            <!-- Restored Profile Dropdown logic with FontAwesome icons -->
+            <div class="profile-dropdown">
+                <button class="profile-icon">
+                    <img src="https://ui-avatars.com/api/?name=Voters+Name&background=e74c3c&color=fff" alt="Profile">
+                </button>
+                <div class="dropdown-content">
+                    <a href="myprofile.html">Profile</a>
+                    <a href="history.html">Voting History</a>
+                    <a href="Login.html" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="welcome-section">
+            <p class="welcome-message">Welcome back, <strong>Voters Name</strong>. Make your vote count.</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Main Voting Card -->
+            <div class="election-card primary-card">
+                <div class="election-header">
+                    <div class="header-content">
+                        <h2>University Student Council Elections</h2>
+                        <span class="status-badge upcoming">Upcoming</span>
+                    </div>
+                </div>
+                <div class="election-body">
+                    <p class="election-desc"> This portal is the unofficial platform for the student body to exercise their right to vote.</p>
+                    
+                    <div class="countdown-container">
+                        <h3>Voting Opens In:</h3>
+                        <div class="timer-boxes" id="countdown">
+                            <div class="time-box">
+                                <span class="time-val" id="days">00</span>
+                                <span class="time-label">Days</span>
+                            </div>
+                            <div class="time-box">
+                                <span class="time-val" id="hours">00</span>
+                                <span class="time-label">Hours</span>
+                            </div>
+                            <div class="time-box">
+                                <span class="time-val" id="minutes">00</span>
+                                <span class="time-label">Mins</span>
+                            </div>
+                            <div class="time-box">
+                                <span class="time-val" id="seconds">00</span>
+                                <span class="time-label">Secs</span>
+                            </div>
+                        </div>
+                        <p class="target-date">Election Date: March 10, 2026</p>
+                    </div>
+                    
+                    <button class="vote-button" id="voteBtn" disabled>Voting Not Started</button>
+                </div>
+            </div>
+
+            <!-- Side Content Cards -->
+            <div class="side-content">
+                <div class="info-card">
+                    <h3><i class="fas fa-bullhorn"></i> Announcements</h3>
+                    <ul class="announcement-list" id="dynamicAnnouncements">
+                        <!-- Announcements will be loaded here dynamically -->
+                        <li><p style="color: #666; font-style: italic;">Loading announcements...</p></li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <h3><i class="fas fa-info-circle"></i> Quick Guidelines</h3>
+                    <ul class="guidelines-list">
+                        <li><i class="fas fa-check-circle"></i> Review candidate platforms carefully.</li>
+                        <li><i class="fas fa-check-circle"></i> You can only submit your vote once.</li>
+                        <li><i class="fas fa-check-circle"></i> Ensure stable internet connection.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>&copy; 2026 Simple Voting System. All rights reserved.</p>
+    </footer>
+
+    <!-- Countdown Timer Script -->
+    <script src="dashboard.js"></script>
 </body>
 </html>

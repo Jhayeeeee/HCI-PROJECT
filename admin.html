@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLM Voting Portal - Admin Dashboard</title>
+    <!-- Import Modern Font (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header" >
+            <h2>Admin Panel</h2>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" class="active"> Candidates</a></li>
+            <li><a href="#" id="toggleElectionBtn"> Announce Winner</a></li>
+            <li><a href="dashboard.html">View Portal</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="#" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="top-header">
+            <div class="header-title">
+                <h1>Candidate Management</h1>
+                <p>Manage election candidates and election status.</p>
+            </div>
+            <div class="election-status">
+                Status: <span id="electionStatusBadge" class="status-badge upcoming">Registration Open</span>
+            </div>
+        </div>
+
+        <!-- Election Settings -->
+        <div class="card settings-card" style="margin-bottom: 30px;">
+            <h2><i class="fas fa-clock"></i> Countdown Target Timer</h2>
+            <form id="electionSettingsForm" style="display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap;">
+                <div class="form-group" style="margin: 0; flex: 1; min-width: 250px;">
+                    <label for="electionTargetTime">Set Date & Time for Countdown</label>
+                    <input type="datetime-local" id="electionTargetTime" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: auto;"><i class="fas fa-save"></i> Update Timer</button>
+            </form>
+        </div>
+
+        <div class="admin-grid">
+            <!-- Add Candidate Form -->
+            <div class="card form-card">
+                <h2><i class="fas fa-user-plus"></i> Add New Candidate</h2>
+                <form id="addCandidateForm">
+                    <div class="form-group">
+                        <label for="candidateName">Full Name</label>
+                        <input type="text" id="candidateName" required placeholder="e.g. Juan Dela Cruz">
+                    </div>
+                    <div class="form-group">
+                        <label for="candidatePosition">Position</label>
+                        <select id="candidatePosition" required>
+                            <option value="">Select Position</option>
+                            <option value="President">President</option>
+                            <option value="Vice President">Vice President</option>
+                            <option value="Secretary">Secretary</option>
+                            <option value="Treasurer">Treasurer</option>
+                            <option value="Auditor">Auditor</option>
+                            <option value="P.R.O.">P.R.O.</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="candidateParty">Party List</label>
+                        <input type="text" id="candidateParty" required placeholder="e.g. Independent">
+                    </div>
+                    <div class="form-group">
+                        <label for="candidateCollege">College</label>
+                        <select id="candidateCollege" required>
+                            <option value="">Select College</option> 
+                            <option value="CollegeOfEngineering">College of Engineering</option> 
+                            <option value="CollegeOfArchitectureAndFineArts">College of Architecture and Fine Arts</option> 
+                            <option value="CollegeOfComputerAndInformationSciences">College of Computer and Information Sciences</option> 
+                            <option value="CollegeOfBusinessAdministration">College of Business Administration</option> 
+                            <option value="CollegeOfEducation">College of Education</option> 
+                            <option value="CollegeOfArtsAndSciences">College of Arts and Sciences</option> 
+                            <option value="CollegeOfNursing">College of Nursing</option> 
+                            <option value="CollegeOfTourismAndHospitalityManagement">College of Tourism and Hospitality Management</option> 
+                            <option value="CollegeOfLaw">College of Law</option> 
+                            <option value="CollegeOfMedicine">College of Medicine</option> 
+                            <option value="CollegeOfPublicAdministrationAndGovernance">College of Public Administration and Governance</option> 
+                            <option value="CollegeOfSocialWorkAndCommunityDevelopment">College of Social Work and Community Development</option> 
+                            <option value="CollegeOfScience">College of Science</option> 
+                            <option value="CollegeOfTechnology">College of Technology</option> 
+                            <option value="CollegeOfVocationalEducation">College of Vocational Education</option> 
+                            <option value="CollegeOfEducation">College of Education</option> 
+                            <option value="CollegeOfArtsAndSciences">College of Arts and Sciences</option> 
+                            <option value="CollegeOfNursing">College of Nursing</option> 
+                            <option value="CollegeOfTourismAndHospitalityManagement">College of Tourism and Hospitality Management</option> 
+                            <option value="CollegeOfLaw">College of Law</option> 
+                            <option value="CollegeOfMedicine">College of Medicine</option> 
+                            <option value="CollegeOfPublicAdministrationAndGovernance">College of Public Administration and Governance</option> 
+                            <option value="CollegeOfSocialWorkAndCommunityDevelopment">College of Social Work and Community Development</option> 
+                            <option value="CollegeOfScience">College of Science</option> 
+                            <option value="CollegeOfTechnology">College of Technology</option> 
+                            <option value="CollegeOfVocationalEducation">College of Vocational Education</option> 
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="candidatePhoto">Profile Photo (Optional)</label>
+                        <input type="file" id="candidatePhoto" accept="image/*" style="padding: 10px; border: 1px dashed #ccc; background: #fafafa; border-radius: 4px; display: block; width: 100%; box-sizing: border-box; margin-top: 5px;">
+                        <small style="color:#666; font-size:0.8em; margin-top:5px; display:block;">For best results, upload a square image.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="candidateQuote">Campaign Quote (Optional)</label>
+                        <textarea id="candidateQuote" rows="3" placeholder="A brief quote or platform summary..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add Candidate</button>
+                </form>
+            </div>
+
+            <!-- List of Candidates -->
+            <div class="card list-card">
+                <h2><i class="fas fa-list"></i> Registered Candidates</h2>
+                <div class="table-responsive">
+                    <table class="candidate-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                                <th>Party</th>
+                                <th>Votes</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="candidateTableBody">
+                            <!-- Candidates will be loaded here dynamically by admin.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Announcements Management -->
+        <div class="admin-grid" style="margin-top: 30px;">
+            <!-- Add Announcement Form -->
+            <div class="card form-card">
+                <h2><i class="fas fa-bullhorn"></i> New Announcement</h2>
+                <form id="addAnnouncementForm">
+                    <div class="form-group">
+                        <label for="announcementTitle">Date / Headline</label>
+                        <input type="text" id="announcementTitle" required placeholder="e.g. Feb 28, 2026">
+                    </div>
+                    <div class="form-group">
+                        <label for="announcementContent">Content</label>
+                        <textarea id="announcementContent" rows="4" required placeholder="Enter announcement details..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Post Announcement</button>
+                </form>
+            </div>
+
+            <!-- List of Announcements -->
+            <div class="card list-card">
+                <h2><i class="fas fa-list-alt"></i> Active Announcements</h2>
+                <div class="table-responsive">
+                    <table class="candidate-table">
+                        <thead>
+                            <tr>
+                                <th>Date/Headline</th>
+                                <th>Preview</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="announcementTableBody">
+                            <!-- Announcements will be loaded here dynamically by admin.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

@@ -1,12 +1,12 @@
 function validateLogin() {
-    const emailField = document.getElementById('email');
+    const usernameField = document.getElementById('username');
     const passField = document.getElementById('password');
     const message = document.getElementById('message');
 
-    const emailValue = emailField.value;
+    const usernameValue = usernameField.value;
     const passValue = passField.value;
 
-    if(emailValue === "admin@plm.edu.ph" && passValue === "1234"){
+    if(usernameValue === "student" && passValue === "1234"){
         window.location.href = "dashboard.html"
     }
     else{

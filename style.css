@@ -1,56 +1,78 @@
-*{
-    margin:0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-}
-
-.background-container{
-    background-color: #003366;
-    height: 100vh;
-    width: 100%;
+/* General Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
+    background-color: #f0f2f5; /* Light grey background */
+    color: #333;
 }
 
-.PLM-LOGO{
-    display: block;
-    text-align: center;
-    margin-left:auto;
-    margin-right: auto;
-    margin-bottom: 25px;
-    width: 120px;
-    height: 120px;
-}
-
-.login-container{
-    background-color: #f6f3f3;
+/* Background Container */
+.background-container {
+    position: relative;
     width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #003366, #0055a4); /* Dark blue gradient */
+    overflow: hidden;
+}
+
+.background-container::before {
+    content: " ";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("PICTURES/PLM-BG.jpeg");
+    background-position: center;
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    opacity: 0.6;
+    z-index: 0;
+}
+
+
+/* Login Container (Card) */
+.login-container {
+    background-color: #ffffff;
+    padding: 40px;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    padding: 40px;
     text-align: center;
-    color: rgb(255, 255, 255);
-    height: fit-content;
+    width: 100%;
     max-width: 400px;
     position: relative;
     z-index: 1;
     box-sizing: border-box;
-    
-} 
+}
 
-h2{
+/* University Logo */
+.PLM-LOGO {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* Titles and Text */
+h2 {
+    color: #003366; /* Dark blue */
     margin-bottom: 10px;
     font-size: 1.8em;
-    color: #003366;
 }
 
-p{
-    margin-bottom:30px;
+p {
+    color: #555;
+    margin-bottom: 30px;
     font-size: 1em;
-    color:#555;
 }
+
+/* Input Fields */
 .input-box {
     margin-bottom: 20px;
 }
@@ -63,6 +85,11 @@ p{
     font-size: 1em;
     box-sizing: border-box;
     transition: border-color 0.3s ease;
+}
+
+.input-box input:focus {
+    border-color: #0055a4; /* Gold accent on focus */
+    outline: none;
 }
 
 /* Login Button */
@@ -124,9 +151,8 @@ p{
 }
 
 .microsoft-button:hover {
-    background-color: #222222;
-    border-color: #f4f4f4;
-    border-style: solid;
+    background-color: #f0f0f0;
+    border-color: #999;
     transform: translateY(-2px);
 }
 
@@ -140,6 +166,7 @@ p{
     background-repeat: no-repeat;
     margin-right: 10px;
 }
+
 /* Error Message */
 .error-message {
     color: #e74c3c;
