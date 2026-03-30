@@ -31,7 +31,7 @@ const x = setInterval(function() {
             voteBtn.disabled = false;
             voteBtn.classList.add("active-vote");
             voteBtn.innerHTML = "Vote Now";
-            voteBtn.onclick = () => window.location.href = 'candidates.html';
+            voteBtn.onclick = () => window.location.href = 'pages/candidates.html';
             
             // Update badge
             const badge = document.querySelector(".status-badge");
@@ -60,7 +60,7 @@ function loadDashboardData() {
             voteBtn.style.background = "#0055a4";
             voteBtn.style.cursor = "pointer";
             voteBtn.innerHTML = "View Election Results";
-            voteBtn.onclick = () => window.location.href = 'results.html';
+            voteBtn.onclick = () => window.location.href = 'pages/results.html';
             
             document.getElementById("countdown").innerHTML = "<div class='voting-open-msg' style='color:#e74c3c;'>ELECTION HAS ENDED</div>";
             clearInterval(x); // Stops the countdown
