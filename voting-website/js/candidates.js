@@ -1,3 +1,35 @@
+window.draftBallot = window.draftBallot || {};
+window.existingPositionsGlobal = [];
+
+// Auto-check for election closure or admin remote status change
+setInterval(() => {
+    let status = localStorage.getItem('electionStatus');
+    if (status === 'open') {
+        const savedTargetStr = localStorage.getItem('electionTargetTime') || "2026-03-10T08:00";
+        const countDownDate = new Date(savedTargetStr).getTime();
+        const distance = countDownDate - new Date().getTime();
+        if (distance < 0) {
+            localStorage.setItem('electionStatus', 'closed');
+            localStorage.removeItem('isLoggedIn');
+            alert("Election time has ended! You will now be securely logged out.");
+            window.location.href = '../Login.html';
+        }
+    }
+    
+    if (status === 'closed') {
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            localStorage.removeItem('isLoggedIn');
+            alert("Voting has formally closed! You are being securely logged out.");
+            window.location.href = '../Login.html';
+        }
+    }
+    
+    if (window.lastKnownStatus && window.lastKnownStatus !== localStorage.getItem('electionStatus')) {
+        loadCandidatesData();
+    }
+    window.lastKnownStatus = localStorage.getItem('electionStatus');
+}, 1000);
+
 // Load data from Admin Panel
 function loadCandidatesData() {
     const candidatesStr = localStorage.getItem('electionCandidates');
@@ -7,20 +39,33 @@ function loadCandidatesData() {
     // Timer sync for Voting availability
     const savedTargetStr = localStorage.getItem('electionTargetTime') || "2026-03-10T08:00";
     const countDownDate = new Date(savedTargetStr).getTime();
-    const nowMs = new Date().getTime();
-    const isVotingOpen = (countDownDate - nowMs) < 0;
+    const isVotingOpen = (status === 'open');
 
     const banner = document.getElementById('countdownBanner');
     if (status === 'concluded') {
         banner.innerHTML = 'Election Concluded';
         banner.style.background = '#e74c3c';
+    } else if (status === 'closed') {
+        banner.innerHTML = 'VOTING CLOSED';
+        banner.style.background = 'red';
+        banner.style.color = '#fff';
+        banner.style.borderRadius = '10px';
+        banner.style.fontSize = '0.95rem';
+        banner.style.padding = '6px 10px';  
     } else if (isVotingOpen) {
-        banner.innerHTML = 'Voting is OPEN';
+        banner.innerHTML = 'VOTING OPEN';
         banner.style.background = '#2ecc71';
+        banner.style.color = '#fff';
+        banner.style.borderRadius = '10px';
+        banner.style.fontSize = '0.95rem';
+        banner.style.padding = '6px 10px';  
     } else {
         banner.innerHTML = 'Election Not Started';
         banner.style.background = '#ffd700';
         banner.style.color = '#856600';
+        banner.style.borderRadius = '10px';
+        banner.style.fontSize = '0.95rem';
+        banner.style.padding = '6px 10px';  
     }
 
     // Render Candidates
@@ -46,6 +91,7 @@ function loadCandidatesData() {
         
         // Find positions that actually have candidates
         const existingPositions = [...new Set(candidates.map(c => c.position))];
+        window.existingPositionsGlobal = existingPositions;
         
         // Sort positions by the predefined order, fallback to alphabetical
         existingPositions.sort((a, b) => {
@@ -55,6 +101,26 @@ function loadCandidatesData() {
             if (indexB === -1) indexB = 999;
             return indexA - indexB;
         });
+        
+        const history = JSON.parse(localStorage.getItem('myVotingHistory') || '[]');
+        
+        // Action Bar UI switch
+        const actionBar = document.getElementById('ballotActionBar');
+        if (status !== 'concluded' && isVotingOpen && history.length === 0 && candidates.length > 0) {
+            if (actionBar) {
+                actionBar.style.display = 'flex';
+                document.body.style.paddingBottom = '80px';
+                const progressText = document.getElementById('ballotProgress');
+                if (progressText) {
+                    progressText.innerText = `Selections: ${Object.keys(window.draftBallot).length} / ${existingPositions.length}`;
+                }
+            }
+        } else {
+            if (actionBar) {
+                actionBar.style.display = 'none';
+                document.body.style.paddingBottom = '0';
+            }
+        }
 
         existingPositions.forEach(pos => {
             const posWrapper = document.createElement('div');
@@ -76,13 +142,15 @@ function loadCandidatesData() {
             
             const candsInPos = candidates.filter(c => c.position === pos);
             const maxVotes = Math.max(...candsInPos.map(c => c.votes || 0));
-            const history = JSON.parse(localStorage.getItem('myVotingHistory') || '[]');
             
             candsInPos.forEach(cand => {
                 const card = document.createElement('div');
                 card.className = 'candidate-public-card';
                 
                 let winnerBadge = '';
+                const hasVotedGlobally = history.length > 0;
+                const canSeeLiveVotes = status === 'concluded' || hasVotedGlobally;
+
                 // Display winner based on Admin manual selection
                 if (status === 'concluded') {
                     const isWinner = cand.isWinner === true;
@@ -92,27 +160,32 @@ function loadCandidatesData() {
                     } else {
                         card.style.opacity = '0.6'; // dim the non-winners
                     }
-                } else if (maxVotes > 0 && (cand.votes || 0) === maxVotes) {
+                } else if (canSeeLiveVotes && maxVotes > 0 && (cand.votes || 0) === maxVotes) {
                     // Highlight the current leader before conclusion
                     winnerBadge = '<div style="position:absolute; top:0; left:0; background:#f1c40f; color:#856600; padding:4px 12px; font-size:0.75em; font-weight:800; border-bottom-right-radius:10px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1);"> CURRENT LEADER</div>';
                     card.style.border = "2px solid #f1c40f";
                     card.style.boxShadow = "0 8px 20px rgba(241, 196, 15, 0.15)";
                 }
 
-                let voteBadge = `<div class="cand-votes" style="background:#e74c3c; color:white; font-weight:bold; display:inline-block; padding:5px 15px; border-radius:20px; margin-bottom:10px; font-size:0.9em;"> ${cand.votes || 0} Votes</div>`;
+                let voteBadge = canSeeLiveVotes ? `<div class="cand-votes" style="background:#e74c3c; color:white; font-weight:bold; display:inline-block; padding:5px 15px; border-radius:20px; margin-bottom:10px; font-size:0.9em;"> ${cand.votes || 0} Votes</div>` : '';
 
                 let voteButtonHtml = '';
-                const hasVotedThisPos = history.some(h => h.position === cand.position);
-                const votedForThisCand = history.some(h => h.id === cand.id);
+                let isSelected = window.draftBallot[cand.position] === cand.id;
 
                 if (status !== 'concluded' && isVotingOpen) {
-                    if (votedForThisCand) {
+                    if (hasVotedGlobally) {
                         voteButtonHtml = `<button disabled style="margin-top:15px; width:100%; background: #bdc3c7; color: #fff; border:none; padding:10px; border-radius:5px; cursor:not-allowed; font-weight:bold;"> Voted</button>`;
-                    } else if (hasVotedThisPos) {
-                        voteButtonHtml = `<button disabled style="margin-top:15px; width:100%; background: #ecf0f1; color: #95a5a6; border:none; padding:10px; border-radius:5px; cursor:not-allowed; font-weight:bold;">Position Filled</button>`;
+                    } else if (isSelected) {
+                        card.style.borderTop = "none";
+                        card.style.border = "3px solid #2ecc71";
+                        card.style.boxShadow = "0 8px 20px rgba(46, 204, 113, 0.25)";
+                        card.style.transform = "scale(1.02)";
+                        voteButtonHtml = `<button onclick="selectCandidate('${cand.id}', '${cand.position}')" style="margin-top:15px; width:100%; background: #2ecc71; color: #fff; border:none; padding:10px; border-radius:5px; cursor:pointer; font-weight:bold; transition: background 0.3s;"><i class="fas fa-check"></i> Selected</button>`;
                     } else {
-                        voteButtonHtml = `<button onclick="voteForCandidate('${cand.id}')" style="margin-top:15px; width:100%; background: #2ecc71; color: #fff; border:none; padding:10px; border-radius:5px; cursor:pointer; font-weight:bold; transition: background 0.3s;"> Vote for ${cand.name}</button>`;
+                        voteButtonHtml = `<button onclick="selectCandidate('${cand.id}', '${cand.position}')" style="margin-top:15px; width:100%; background: #0055a4; color: #fff; border:none; padding:10px; border-radius:5px; cursor:pointer; font-weight:bold; transition: background 0.3s;"> Select for ${cand.position}</button>`;
                     }
+                } else if (status === 'closed') {
+                    voteButtonHtml = `<button disabled style="margin-top:15px; width:100%; background: #f39c12; color: #fff; border:none; padding:10px; border-radius:5px; cursor:not-allowed; font-weight:bold;">Voting Closed</button>`;
                 } else if (status === 'concluded') {
                     voteButtonHtml = `<button disabled style="margin-top:15px; width:100%; background: #bdc3c7; color: #fff; border:none; padding:10px; border-radius:5px; cursor:not-allowed; font-weight:bold;">Final Result</button>`;
                 } else {
@@ -147,51 +220,101 @@ function loadCandidatesData() {
 
 document.addEventListener('DOMContentLoaded', loadCandidatesData);
 
-// Expose vote function
-window.voteForCandidate = function(id) {
-    const candidatesStr = localStorage.getItem('electionCandidates');
-    if (!candidatesStr) return;
-    
-    let candidates = JSON.parse(candidatesStr);
-    const index = candidates.findIndex(c => c.id === id);
-    if (index === -1) return;
-    
-    const cand = candidates[index];
-    let history = JSON.parse(localStorage.getItem('myVotingHistory') || '[]');
-    
-    if (history.some(h => h.position === cand.position)) {
-        alert("You have already cast your vote for the position of " + cand.position + "!");
-        return;
+window.selectCandidate = function(id, position) {
+    if (window.draftBallot[position] === id) {
+        delete window.draftBallot[position];
+    } else {
+        window.draftBallot[position] = id;
     }
+    loadCandidatesData();
+};
 
-    if (confirm("Cast your final, secure vote for " + cand.name + " (" + cand.position + ")? This action cannot be undone.")) {
-        if (!candidates[index].votes) {
-           candidates[index].votes = 0;
-        }
-        candidates[index].votes++;
-        localStorage.setItem('electionCandidates', JSON.stringify(candidates));
-        
-        history.push({
-            id: cand.id,
-            name: cand.name,
-            position: cand.position,
-            party: cand.party,
-            timestamp: new Date().toLocaleString()
-        });
-        localStorage.setItem('myVotingHistory', JSON.stringify(history));
-                
-        alert("Your vote has been securely recorded!");
-        loadCandidatesData(); // Redraw UI immediately
+window.clearBallot = function() {
+    if (Object.keys(window.draftBallot).length === 0) return;
+    if (confirm("Are you sure you want to clear all your current selections?")) {
+        window.draftBallot = {};
+        loadCandidatesData();
     }
 };
 
-// Sync custom profile photo globally
-document.addEventListener('DOMContentLoaded', () => {
+window.submitBallot = function() {
+    const selectedCount = Object.keys(window.draftBallot).length;
+    const requiredCount = window.existingPositionsGlobal.length;
+    
+    if (selectedCount < requiredCount) {
+        alert("Please select a candidate for ALL positions before submitting.\\n(" + selectedCount + " of " + requiredCount + " selected)");
+        return;
+    }
+    
+    if (confirm("Are you ready to cast your final, secure vote? This action cannot be undone.")) {
+        const candidatesStr = localStorage.getItem('electionCandidates');
+        if (!candidatesStr) return;
+        
+        let candidates = JSON.parse(candidatesStr);
+        let history = JSON.parse(localStorage.getItem('myVotingHistory') || '[]');
+        
+        // Save votes
+        for (const [position, id] of Object.entries(window.draftBallot)) {
+            const index = candidates.findIndex(c => c.id === id);
+            if (index !== -1) {
+                if (!candidates[index].votes) {
+                    candidates[index].votes = 0;
+                }
+                candidates[index].votes++;
+                
+                history.push({
+                    id: candidates[index].id,
+                    name: candidates[index].name,
+                    position: candidates[index].position,
+                    party: candidates[index].party,
+                    timestamp: new Date().toLocaleString()
+                });
+            }
+        }
+        
+        localStorage.setItem('electionCandidates', JSON.stringify(candidates));
+        localStorage.setItem('myVotingHistory', JSON.stringify(history));
+        
+        window.draftBallot = {};
+        alert("Your complete ballot has been securely recorded! Thank you for voting.");
+        loadCandidatesData(); // Redraw UI to "Voted" state
+    }
+};
+
+// Authentication & Security Heartbeat
+function checkAuthAndStatus() {
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = '../Login.html';
+        return;
+    }
+    const status = localStorage.getItem('electionStatus') || 'upcoming';
+    if (status === 'closed') {
+        localStorage.removeItem('isLoggedIn');
+        alert("Voting has formally closed! You are being securely logged out.");
+        window.location.href = '../Login.html';
+    }
+}
+
+// Global UI Sync for Sidebar
+function syncSidebarUI() {
     const savedPhoto = localStorage.getItem('myProfilePhoto');
     if (savedPhoto) {
+        const avatars = document.querySelectorAll('.sidebar-avatar');
+        avatars.forEach(img => {
+            img.src = savedPhoto;
+            img.style.objectFit = 'cover';
+        });
         document.querySelectorAll('.profile-icon img').forEach(img => {
             img.src = savedPhoto;
             img.style.objectFit = 'cover';
         });
     }
+}
+
+// Initial check
+checkAuthAndStatus();
+setInterval(checkAuthAndStatus, 1000);
+
+document.addEventListener('DOMContentLoaded', () => {
+    syncSidebarUI();
 });

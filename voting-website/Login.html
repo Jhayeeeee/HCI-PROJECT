@@ -3,14 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Voting System -Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>e-Voting System -Login</title>
     <link rel="stylesheet" href="css/Login.css">
 </head>
 <body>
     <div class="background-container">
         <div class="login-container">
-            <h2>Simple Voting System</h2>
+            <h2>e-Voting System</h2>
             <p>Please enter your credentials to vote.</p>
+            
+            <!-- Login Countdown Timer -->
+            <div id="loginTimerContainer" style="display: none; background: #ffeaa7; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center; border: 2px solid #fdcb6e;">
+                <h4 style="margin: 0 0 10px 0; color: #d35400;">Election Opens In:</h4>
+                <div id="loginTimerValues" style="font-size: 1.2em; font-weight: bold; color: #e67e22; font-family: monospace;">
+                    -- : -- : -- : --
+                </div>
+            </div>
             
             <form id="loginForm" onsubmit="validateLogin()">
             <div class="input-box">
@@ -25,6 +34,10 @@
             <button type="button" class="microsoft-button" onclick="loginWithMicrosoft()">Sign in with Microsoft Account</button>
             </form>
             <h4 id="message" class="error-message"></h4>
+
+            <div style="margin-top: 25px;">
+                <a href="mainpage.html" style="color:#0055a4; text-decoration: none; font-size: 0.9em; font-weight: 600;"><i class="fa-solid fa-arrow-left"></i> Back to Mainpage</a>
+            </div>
     </div>
 </div>
 <script src="js/Login.js"></script>

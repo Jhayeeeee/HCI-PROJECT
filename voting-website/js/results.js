@@ -11,7 +11,7 @@ function loadResultsData() {
                 <i class="fas fa-lock" style="font-size: 3em; color: #bdc3c7; margin-bottom: 20px;"></i>
                 <h2 style="color: #333;">Results Not Available</h2>
                 <p style="color: #666;">The election has not been concluded yet. Please check back later when administration officially concludes the voting process.</p>
-                <a href="candidates.html" class="btn btn-primary" style="margin-top:20px; display:inline-block; text-decoration:none; background: #0055a4; color: #fff; padding: 10px 20px; border-radius: 5px;"> View Candidates</a>
+                <a href="${status === 'open' ? 'candidates.html' : '../dashboard.html'}" class="btn btn-primary" style="margin-top:20px; display:inline-block; text-decoration:none; background: #0055a4; color: #fff; padding: 10px 20px; border-radius: 5px;"> Go Back</a>
             </div>
         `;
         return;
@@ -68,7 +68,7 @@ function loadResultsData() {
         const avatarSrc = w.photo ? w.photo : `https://ui-avatars.com/api/?name=${encodeURIComponent(w.name)}&background=random`;
         html += `
             <div class="candidate-public-card" style="border-top: 5px solid #f01228ff;">
-                <div class="winner-badge" color:white;"> WINNER</div>
+                <div class="winner-badge" style="font-weight:bold; color:red; font-size:1.2em;">WINNER</div>
                 <div class="cand-avatar">
                     <img src="${avatarSrc}" alt="${w.name}" style="object-fit:cover;">
                 </div>
@@ -88,7 +88,40 @@ function loadResultsData() {
     container.innerHTML = html;
 }
 
-document.addEventListener('DOMContentLoaded', loadResultsData);
+// Authentication & Security Heartbeat
+function checkAuthAndStatus() {
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = '../Login.html';
+        return;
+    }
+    const status = localStorage.getItem('electionStatus') || 'upcoming';
+    if (status === 'closed') {
+        localStorage.removeItem('isLoggedIn');
+        alert("Voting has formally closed! You are being securely logged out.");
+        window.location.href = '../Login.html';
+    }
+}
+
+// Global UI Sync for Sidebar
+function syncSidebarUI() {
+    const savedPhoto = localStorage.getItem('myProfilePhoto');
+    if (savedPhoto) {
+        const avatars = document.querySelectorAll('.sidebar-avatar');
+        avatars.forEach(img => {
+            img.src = savedPhoto;
+            img.style.objectFit = 'cover';
+        });
+    }
+}
+
+// Initial check
+checkAuthAndStatus();
+setInterval(checkAuthAndStatus, 1000);
+
+document.addEventListener('DOMContentLoaded', () => {
+    syncSidebarUI();
+    loadResultsData();
+});
 
 // Sync custom profile photo globally
 document.addEventListener('DOMContentLoaded', () => {

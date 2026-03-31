@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Voting System - Dashboard</title>
+    <title>e-Voting System - Dashboard</title>
     <!-- Import Modern Font (Inter) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
     <!-- Font Awesome for Icons -->
@@ -11,28 +11,45 @@
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
-    <div class="header">
-        <div class="header-left">
-            <span class="portal-name">Simple Voting System</span>
+<div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="portal-name" style="color:white; font-size: 20px;">Voting Portal</span>
+            <button class="close-btn" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
         </div>
-        <div class="header-right">
-            <a href="dashboard.html" class="nav-button active" style="text-decoration:none;">DASHBOARD</a>
-            <a href="pages/candidates.html" class="nav-button" style="text-decoration:none;">CANDIDATES</a>
-            <a href="pages/results.html" class="nav-button" style="text-decoration:none;">RESULTS</a>
+        
+        <div class="sidebar-user">
+             <img src="https://ui-avatars.com/api/?name=Voters+Name&background=e74c3c&color=fff" alt="Profile" class="sidebar-avatar">
+             <div class="sidebar-user-info">
+                 <span class="sidebar-user-name">Voters Name</span>
+                 <span class="sidebar-user-role">Student Voter</span>
+             </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">MAIN MENU</div>
+            <a href="dashboard.html" class="nav-item active"><i class="fas fa-home" style="color: #cbd5e1; width:25px; text-align:center;"></i> Dashboard</a>
+            <a href="pages/candidates.html" class="nav-item"><i class="fas fa-users" style="color: #cbd5e1; width:25px; text-align:center;"></i> Candidates</a>
+            <a href="pages/results.html" class="nav-item"><i class="fas fa-chart-bar" style="color: #cbd5e1; width:25px; text-align:center;"></i> Results</a>
             
-            <!-- Restored Profile Dropdown logic with FontAwesome icons -->
-            <div class="profile-dropdown">
-                <button class="profile-icon">
-                    <img src="https://ui-avatars.com/api/?name=Voters+Name&background=e74c3c&color=fff" alt="Profile">
-                </button>
-                <div class="dropdown-content">
-                    <a href="pages/myprofile.html">Profile</a>
-                    <a href="pages/history.html">Voting History</a>
-                    <a href="Login.html" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                </div>
-            </div>
+            <div class="nav-section" style="margin-top: 25px;">ACCOUNT OPTIONS</div>
+            <a href="pages/myprofile.html" class="nav-item"><i class="fas fa-user" style="color: #cbd5e1; width:25px; text-align:center;"></i> My Profile</a>
+            <a href="pages/history.html" class="nav-item"><i class="fas fa-history" style="color: #cbd5e1; width:25px; text-align:center;"></i> Voting History</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="Login.html" class="nav-item logout-btn" onclick="return confirm('Are you sure you want to log out?')"><i class="fas fa-sign-out-alt" style="width:25px; text-align:center;"></i> Logout</a>
         </div>
-    </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content">
+        <!-- Mobile Header (Visible only on small screens) -->
+        <div class="mobile-header">
+            <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+            <span class="portal-name" style="color:#0e0664;">Voting Portal</span>
+        </div>
 
     <div class="container">
         <div class="welcome-section">
@@ -41,7 +58,7 @@
 
         <div class="dashboard-grid">
             <!-- Main Voting Card -->
-            <div class="election-card primary-card">
+            <div class="election-card primary-card">    
                 <div class="election-header">
                     <div class="header-content">
                         <h2>University Student Council Elections</h2>
@@ -71,7 +88,7 @@
                                 <span class="time-label">Secs</span>
                             </div>
                         </div>
-                        <p class="target-date">Election Date: March 10, 2026</p>
+
                     </div>
                     
                     <button class="vote-button" id="voteBtn" disabled>Voting Not Started</button>
@@ -101,10 +118,17 @@
     </div>
     
     <footer class="footer">
-        <p>&copy; 2026 Simple Voting System. All rights reserved.</p>
+        <p>&copy; 2026 e-Voting System. All rights reserved.</p>
     </footer>
+    </div> <!-- End main-content -->
+</div> <!-- End app-layout -->
 
     <!-- Countdown Timer Script -->
     <script src="js/dashboard.js"></script>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+    </script>
 </body>
 </html>
