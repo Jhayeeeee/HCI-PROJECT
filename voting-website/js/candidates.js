@@ -266,6 +266,7 @@ window.submitBallot = function() {
                     id: candidates[index].id,
                     name: candidates[index].name,
                     position: candidates[index].position,
+                    photo: candidates[index].photo,
                     party: candidates[index].party,
                     timestamp: new Date().toLocaleString()
                 });

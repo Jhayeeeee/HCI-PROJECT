@@ -152,9 +152,9 @@ function renderElectionStatus() {
         if (btnAnnounce) { btnAnnounce.disabled = true; btnAnnounce.style.opacity = '0.5'; }
     } else if (status === 'closed') {
         if (badge) {
-            badge.innerText = "Voting CLOSED";
+            badge.innerText = "Voting is CLOSED";
             badge.className = "status-badge";
-            badge.style.backgroundColor = "#f39c12";
+            badge.style.backgroundColor = "#e32b1bff";
             badge.style.color = "white";
         }
         if (btnOpen) { btnOpen.disabled = true; btnOpen.style.opacity = '0.5'; }
@@ -203,8 +203,6 @@ if (document.getElementById('addCandidateForm')) {
         const party = document.getElementById('candidateParty').value;
         const collegeSelect = document.getElementById('candidateCollege');
         const college = collegeSelect.options[collegeSelect.selectedIndex].text;
-        const quoteEl = document.getElementById('candidateQuote');
-        const quote = quoteEl ? quoteEl.value : "";
         const photoInput = document.getElementById('candidatePhoto');
         const formElement = this;
 
@@ -218,7 +216,6 @@ if (document.getElementById('addCandidateForm')) {
                 position: position,
                 party: party,
                 college: college,
-                quote: quote,
                 photo: photoData,
                 votes: 0 // Initialize votes (could be used later)
             });
