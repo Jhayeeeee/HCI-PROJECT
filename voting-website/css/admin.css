@@ -1,7 +1,4 @@
-/* 
-    Admin Dashboard Styling - Mirroring Dashboard + Compact Design
-    Tailored for high-density administrative tasks.
-*/
+/*Admin Dashboard Styling */
 
 :root {
     --primary-blue: #0e0664;
@@ -421,4 +418,97 @@ input[type="datetime-local"]:hover {
         display: none;
     }
 }
+
+/* Dynamically Generated Content Styling (admin.js) */
+.table-empty-msg {
+    text-align: center;
+    color: #888;
+    padding: 20px;
+}
+
+.candidate-winner-badge {
+    font-weight: bold;
+    color: red;
+}
+
+.candidate-info-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.candidate-avatar-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.candidate-name-text {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 0.95em;
+}
+
+.candidate-position-text {
+    font-weight: 600;
+    color: #0055a4;
+}
+
+.candidate-party-badge {
+    background: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+.candidate-votes-text {
+    font-size: 1.1em;
+    color: #0f172a;
+}
+
+.candidate-action-btn {
+    padding: 6px 10px;
+    font-size: 0.8em;
+    border: none;
+    border-radius: 6px;
+}
+
+.btn-locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-active {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.announcement-title-cell {
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 4px;
+}
+
+.announcement-date-text {
+    font-size: 0.8em;
+    color: #94a3b8;
+}
+
+.announcement-content-cell {
+    max-width: 300px;
+    color: #64748b;
+    font-size: 0.9em;
+}
+
+.announcement-action-btn {
+    padding: 8px 12px;
+    font-size: 0.85em;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
 

@@ -106,7 +106,7 @@ function loadDashboardData() {
         const welcomeMessage = document.querySelector('.welcome-message');
         if (welcomeMessage) {
             welcomeMessage.innerHTML = '<strong>Election Concluded!</strong> The final results have been announced.';
-            welcomeMessage.style.color = '#e74c3c';
+            welcomeMessage.classList.add('welcome-message-concluded');
         }
 
         if (voteBtn) {
@@ -118,14 +118,12 @@ function loadDashboardData() {
             voteBtn.innerHTML = "View Election Results";
             voteBtn.onclick = () => window.location.href = 'pages/results.html';
             
-            document.getElementById("countdown").innerHTML = "<div class='voting-open-msg' style='color:#e74c3c;'>ELECTION HAS ENDED</div>";
+            document.getElementById("countdown").innerHTML = "<div class='voting-open-msg voting-ended-msg'>ELECTION HAS ENDED</div>";
         }
         
         if (badge) {
             badge.innerText = "Concluded";
-            badge.className = "status-badge";
-            badge.style.backgroundColor = "#e74c3c";
-            badge.style.color = "#fff";
+            badge.className = "status-badge concluded";
         }
     } else if (status === 'open') {
         const hasVoted = localStorage.getItem('myVotingHistory') !== null;
@@ -137,50 +135,39 @@ function loadDashboardData() {
             if (hasVoted) {
                 // Smart Transparency feature: Voted users can see live stats on candidates page
                 voteBtn.innerHTML = "<i class='fas fa-chart-line'></i> View Live Leaderboard";
-                voteBtn.style.background = "#0055a4"; 
+                voteBtn.classList.add('vote-btn-voted');
                 voteBtn.onclick = () => window.location.href = 'pages/candidates.html';
             } else {
                 voteBtn.innerHTML = "Vote Now";
-                voteBtn.style.background = ""; // Reset gradient
+                voteBtn.classList.remove('vote-btn-voted');
                 voteBtn.onclick = () => window.location.href = 'pages/candidates.html';
             }
         }
         if (badge) {
             badge.innerText = "Voting  OPEN";
             badge.className = "status-badge ongoing";
-            badge.style.backgroundColor = "#2ecc71";
-            badge.style.color = "#fff";
         }
     } else if (status === 'closed') {
         if (voteBtn) {
             voteBtn.disabled = true;
-            voteBtn.className = "vote-button";
+            voteBtn.className = "vote-button vote-btn-closed";
             voteBtn.innerHTML = "Voting Closed";
-            voteBtn.style.background = "#0055a4";
-            voteBtn.style.color = "#fff";
-            voteBtn.style.cursor = "not-allowed";
             voteBtn.onclick = null;
         }
         if (badge) {
             badge.innerText = "Voting CLOSED";
-            badge.className = "status-badge";
-            badge.style.backgroundColor = "red";
-            badge.style.color = "#fff";
+            badge.className = "status-badge concluded"; // Reusing concluded for red style
         }
     } else {
         // Upcoming
         if (voteBtn) {
             voteBtn.disabled = true;
-            voteBtn.className = "vote-button";
+            voteBtn.className = "vote-button vote-btn-upcoming";
             voteBtn.innerHTML = "Voting Not Started";
-            voteBtn.style.background = "#bdc3c7";
-            voteBtn.style.cursor = "not-allowed";
         }
         if (badge) {
             badge.innerText = "Upcoming";
             badge.className = "status-badge upcoming";
-            badge.style.backgroundColor = "#ffd700";
-            badge.style.color = "#856600";
         }
     }
 }
@@ -196,7 +183,7 @@ function loadAnnouncements() {
     list.innerHTML = '';
     
     if (announcements.length === 0) {
-        list.innerHTML = '<li><p style="color: #666; font-style: italic;">No new announcements at this time.</p></li>';
+        list.innerHTML = '<li><p class="announcement-empty-msg">No new announcements at this time.</p></li>';
         return;
     }
 
@@ -204,8 +191,8 @@ function loadAnnouncements() {
     announcements.slice(0, 5).forEach(ann => {
         const li = document.createElement('li');
         li.innerHTML = `
-            <span class="date" style="font-weight:bold; color:#0055a4; display:block; margin-bottom:5px;">${ann.title}</span>
-            <p style="margin:0; line-height:1.4;">${ann.content}</p>
+            <span class="announcement-item-title">${ann.title}</span>
+            <p class="announcement-item-content">${ann.content}</p>
         `;
         list.appendChild(li);
     });
@@ -222,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (savedPhoto) {
         document.querySelectorAll('.profile-icon img').forEach(img => {
             img.src = savedPhoto;
-            img.style.objectFit = 'cover';
+            img.classList.add('sidebar-avatar-fit');
         });
     }
 });

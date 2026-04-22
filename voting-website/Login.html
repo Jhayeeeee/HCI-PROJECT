@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <title>Login - Student Voting Portal</title>
+    <title>Login -Student Voting Portal</title>
     <link rel="stylesheet" href="css/Login.css">
 </head>
 <body>
@@ -17,10 +17,11 @@
             
             <form id="loginForm" onsubmit="validateLogin()">
             <div class="input-box">
-                <input type="text" id="username" placeholder="Username" required>
+                <input type="text" id="email" placeholder="Email" required>
             </div>
-            <div class="input-box">
+            <div class="input-box password-container">
                 <input type="password" id="password" placeholder="Password" required>
+                <i class="fa-solid fa-eye" id="togglePassword" onclick="togglePasswordVisibility()"></i>
             </div>
             <button type="button" class="login-button" onclick="validateLogin()">Login</button>
             <div class="button-separator"><span>OR</span></div>
@@ -29,8 +30,8 @@
             </form>
             <h4 id="message" class="error-message"></h4>
 
-            <div style="margin-top: 25px;">
-                <a href="mainpage.html" style="color:#0055a4; text-decoration: none; font-size: 0.9em; font-weight: 600;"><i class="fa-solid fa-arrow-left"></i> Back to Mainpage</a>
+            <div class="mt-25">
+                <a href="mainpage.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Mainpage</a>
             </div>
     </div>
 </div>

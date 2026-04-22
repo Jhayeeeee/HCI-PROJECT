@@ -1,20 +1,18 @@
 function validateLogin() {
-    const usernameField = document.getElementById('username');
+    const emailField = document.getElementById('email');
     const passField = document.getElementById('password');
     const message = document.getElementById('message');
 
-    const usernameValue = usernameField.value;
+    const emailValue = emailField.value;
     const passValue = passField.value;
 
-    if(usernameValue === "student" && passValue === "1234"){
+    if(emailValue === "EMAIL_SCHOOLADDRESS" && passValue === "1234"){
         const status = localStorage.getItem('electionStatus') || 'upcoming';
 
         if (status === 'closed') {
             if(message){
                 message.innerText = "Voting has ended. Awaiting results.";
-                message.style.color = "red";
-                message.style.fontWeight = "bold";
-                message.style.fontSize = "1.2em";
+                message.className = "error-message admin-error";
             }
             return;
         }
@@ -25,7 +23,7 @@ function validateLogin() {
     else{
         if(message){
             message.innerText = "Invalid Username or Password!";
-            message.style.color = "red";
+            message.className = "error-message admin-error";
         }
         console.log("Login failed.");
         passField.focus();
@@ -42,3 +40,18 @@ document.addEventListener('keydown', function(event) {
         validateLogin(); 
     }
 });
+
+function togglePasswordVisibility() {
+    const passwordInput = document.getElementById('password');
+    const toggleIcon = document.getElementById('togglePassword');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+    }
+}

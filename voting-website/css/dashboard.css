@@ -113,8 +113,9 @@ body {
 
 .nav-item i {
     font-size: 1.2em;
-    width: 24px;
+    width: 25px;
     text-align: center;
+    color: #cbd5e1;
 }
 
 .nav-item:hover {
@@ -155,6 +156,11 @@ body {
     padding-left: 5px;
 }
 
+.logout-btn i {
+    width: 25px;
+    text-align: center;
+}
+
 
 .main-content {
     flex: 1;
@@ -190,6 +196,10 @@ body {
     margin: 0 auto;
     flex: 1;
     width: 100%;
+}
+
+.container.narrow {
+    max-width: 1000px;
 }
 
 .welcome-section {
@@ -761,3 +771,247 @@ body {
         .vote-button:hover{
             background-color: #033a66;
         }
+
+/* Specific Page Overrides */
+.sidebar-header .portal-name {
+    color: white;
+    font-size: 20px;
+}
+
+.mobile-header .portal-name {
+    color: #0e0664;
+}
+
+.nav-section.mt-25 {
+    margin-top: 25px;
+}
+
+/* Candidates Page & Ballot Styling */
+.banner-badge {
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+.banner-concluded { background: #e74c3c !important; }
+.banner-closed { background: red !important; }
+.banner-open { background: #2ecc71 !important; }
+.banner-upcoming { background: #ffd700 !important; color: #856600 !important; }
+
+.no-candidates-msg {
+    color: #666;
+    font-size: 1.1em;
+    text-align: center;
+    padding: 40px;
+}
+
+.position-group {
+    margin-bottom: 50px;
+}
+
+.position-grid-mt {
+    margin-top: 20px;
+}
+
+.position-title {
+    border-bottom: 3px solid #0055a4;
+    padding-bottom: 10px;
+    color: #090969;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.winner-badge-concluded {
+    background: #2ecc71 !important;
+    color: white !important;
+}
+
+.card-concluded-winner {
+    border-top: 5px solid #2ecc71 !important;
+}
+
+.card-dimmed {
+    opacity: 0.6;
+}
+
+.leader-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #f1c40f;
+    color: #856600;
+    padding: 4px 12px;
+    font-size: 0.75em;
+    font-weight: 800;
+    border-bottom-right-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.card-leader {
+    border: 2px solid #f1c40f !important;
+    box-shadow: 0 8px 20px rgba(241, 196, 15, 0.15) !important;
+}
+
+.cand-votes-badge {
+    background: #e74c3c;
+    color: white;
+    font-weight: bold;
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.btn-vote {
+    margin-top: 15px;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s;
+    color: #fff;
+}
+
+.btn-vote-voted { background: #bdc3c7 !important; cursor: not-allowed; }
+.btn-vote-selected { background: #2ecc71 !important; cursor: pointer; }
+.btn-vote-select { background: #0055a4 !important; cursor: pointer; }
+.btn-vote-closed { background: #f39c12 !important; cursor: not-allowed; }
+.btn-vote-result { background: #bdc3c7 !important; cursor: not-allowed; }
+.btn-vote-upcoming { background: #bdc3c7 !important; cursor: not-allowed; }
+
+.card-selected {
+    border-top: none !important;
+    border: 3px solid #2ecc71 !important;
+    box-shadow: 0 8px 20px rgba(46, 204, 113, 0.25) !important;
+    transform: scale(1.02);
+}
+
+.cand-avatar-img-fit {
+    object-fit: cover;
+}
+
+.cand-quote-mt {
+    margin-top: 10px;
+}
+
+.sidebar-avatar-fit {
+    object-fit: cover;
+}
+
+/* Dashboard Page Overrides */
+.welcome-message-concluded {
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.voting-ended-msg {
+    color: #e74c3c;
+}
+
+.vote-btn-concluded {
+    background: #0055a4 !important;
+    color: #fff !important;
+    cursor: pointer !important;
+}
+
+.vote-btn-voted {
+    background: #0055a4 !important;
+}
+
+.vote-btn-closed {
+    background: #0055a4 !important;
+    color: #fff !important;
+    cursor: not-allowed !important;
+}
+
+.vote-btn-upcoming {
+    background: #bdc3c7 !important;
+    cursor: not-allowed !important;
+}
+
+.announcement-empty-msg {
+    color: #666;
+    font-style: italic;
+}
+
+.announcement-item-title {
+    font-weight: bold;
+    color: #0055a4;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.announcement-item-content {
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Results Page Styling */
+.results-locked-card {
+    text-align: center;
+    padding: 50px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.results-lock-icon {
+    font-size: 3em;
+    color: #bdc3c7;
+    margin-bottom: 20px;
+}
+
+.results-locked-title {
+    color: #333;
+}
+
+.results-locked-text {
+    color: #666;
+}
+
+.btn-go-back {
+    margin-top: 20px;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.results-section-title {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #0055a4;
+    padding-bottom: 15px;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.results-congrats-text {
+    color: #555;
+    font-size: 1.1em;
+    margin-bottom: 30px;
+}
+
+.winner-card-red {
+    border-top: 5px solid #f01228 !important;
+}
+
+.winner-badge-text {
+    font-weight: bold;
+    color: red !important;
+    font-size: 1.2em !important;
+}
+
+.cand-votes-blue {
+    background: #0055a4 !important;
+    color: white !important;
+    font-weight: bold;
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}

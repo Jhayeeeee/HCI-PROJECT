@@ -56,13 +56,36 @@ p{
 }
 
 .input-box input {
-    width: calc(100% - 40px); /* Adjust for padding */
+    width: 100%;
     padding: 15px 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 1em;
     box-sizing: border-box;
     transition: border-color 0.3s ease;
+}
+
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container i {
+    position: absolute;
+    right: 15px;
+    color: #666;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: color 0.3s ease;
+}
+
+.password-container i:hover {
+    color: #003366;
+}
+
+.password-container input {
+    padding-right: 45px; /* Space for the eye icon */
 }
 
 /* Login Button */
@@ -146,4 +169,36 @@ p{
     color: #e74c3c;
     margin-top: 20px;
     font-size: 0.9em;
+}
+
+/* Utility Classes */
+.mt-25 {
+    margin-top: 25px;
+}
+
+.back-link {
+    color: #0055a4;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.admin-error {
+    color: #e74c3c;
+    margin-top: 15px;
+}
+
+.admin-badge {
+    background-color: #e74c3c;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 10px;
 }

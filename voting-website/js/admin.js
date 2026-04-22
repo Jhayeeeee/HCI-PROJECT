@@ -4,7 +4,7 @@ if (localStorage.getItem('isAdminLoggedIn') !== 'true') {
 }
 
 function adminLogout() {
-    if (confirm("Are you sure you want to log out of the Admin Panel?")) {
+    if (confirm("Are you sure you want to log out?")) {
         localStorage.removeItem('isAdminLoggedIn');
         window.location.href = 'admin-login.html';
     }
@@ -45,7 +45,7 @@ function renderCandidatesList() {
     tbody.innerHTML = '';
 
     if (candidates.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #888; padding: 20px;">No candidates registered yet. Start adding candidates!</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="table-empty-msg">No candidates registered yet. Start adding candidates!</td></tr>';
         return;
     }
 
@@ -66,7 +66,7 @@ function renderCandidatesList() {
         const isWinner = status === 'concluded' && winners[candidate.position] && winners[candidate.position].id === candidate.id && candidate.votes > 0;
         
         const rowClass = isWinner ? 'winner-row' : '';
-        const winnerBadge = isWinner ? '<span class="candidate-winner-badge" style="font-weight:bold; color:red;">WINNER</span>' : '';
+        const winnerBadge = isWinner ? '<span class="candidate-winner-badge">WINNER</span>' : '';
 
         const avatarSrc = candidate.photo ? candidate.photo : `https://ui-avatars.com/api/?name=${encodeURIComponent(candidate.name)}&background=random`;
 
@@ -74,19 +74,19 @@ function renderCandidatesList() {
         if (rowClass) tr.className = rowClass;
         tr.innerHTML = `
             <td>
-                <div style="display:flex; align-items:center; gap:12px;">
-                    <img src="${avatarSrc}" style="width:36px; height:36px; border-radius:10px; object-fit:cover; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <div class="candidate-info-cell">
+                    <img src="${avatarSrc}" class="candidate-avatar-img">
                     <div>
-                        <div style="font-weight: 700; color: #1e293b; font-size:0.95em;">${candidate.name}</div>
+                        <div class="candidate-name-text">${candidate.name}</div>
                     </div>
                     ${winnerBadge}
                 </div>
             </td>
-            <td style="font-weight: 600; color: #0055a4;">${candidate.position}</td>
-            <td><span style="background: #f1f5f9; padding: 4px 8px; border-radius: 6px; font-size: 0.8em; font-weight: 600;">${candidate.party}</span></td>
-            <td><strong style="font-size: 1.1em; color: #0f172a;">${candidate.votes || 0}</strong></td>
+            <td class="candidate-position-text">${candidate.position}</td>
+            <td><span class="candidate-party-badge">${candidate.party}</span></td>
+            <td><strong class="candidate-votes-text">${candidate.votes || 0}</strong></td>
             <td>
-                <button class="btn btn-danger" style="padding:6px 10px; font-size:0.8em; border:none; border-radius:6px; opacity:${status === 'upcoming' ? '1' : '0.5'}; cursor:${status === 'upcoming' ? 'pointer' : 'not-allowed'};" onclick="deleteCandidate('${candidate.id}')" ${status === 'upcoming' ? '' : 'disabled'}>
+                <button class="btn btn-danger candidate-action-btn ${status === 'upcoming' ? 'btn-active' : 'btn-locked'}" onclick="deleteCandidate('${candidate.id}')" ${status === 'upcoming' ? '' : 'disabled'}>
                     <i class="fas fa-trash"></i>
                 </button>
             </td>
@@ -128,47 +128,39 @@ function renderElectionStatus() {
     const btnReset = document.getElementById('ctrlReset');
     
     // Reset all buttons to enabled first (except reset, always enabled)
-    if (btnOpen) { btnOpen.disabled = false; btnOpen.style.opacity = '1'; }
-    if (btnClose) { btnClose.disabled = false; btnClose.style.opacity = '1'; }
-    if (btnAnnounce) { btnAnnounce.disabled = false; btnAnnounce.style.opacity = '1'; }
+    if (btnOpen) { btnOpen.disabled = false; btnOpen.classList.remove('btn-locked'); btnOpen.classList.add('btn-active'); }
+    if (btnClose) { btnClose.disabled = false; btnClose.classList.remove('btn-locked'); btnClose.classList.add('btn-active'); }
+    if (btnAnnounce) { btnAnnounce.disabled = false; btnAnnounce.classList.remove('btn-locked'); btnAnnounce.classList.add('btn-active'); }
 
     if (status === 'upcoming') {
         if (badge) {
             badge.innerText = "Upcoming / Prep Mode";
             badge.className = "status-badge upcoming";
-            badge.style.backgroundColor = "#ffd700";
-            badge.style.color = "#856600";
         }
-        if (btnClose) { btnClose.disabled = true; btnClose.style.opacity = '0.5'; }
-        if (btnAnnounce) { btnAnnounce.disabled = true; btnAnnounce.style.opacity = '0.5'; }
+        if (btnClose) { btnClose.disabled = true; btnClose.classList.add('btn-locked'); btnClose.classList.remove('btn-active'); }
+        if (btnAnnounce) { btnAnnounce.disabled = true; btnAnnounce.classList.add('btn-locked'); btnAnnounce.classList.remove('btn-active'); }
     } else if (status === 'open') {
         if (badge) {
             badge.innerText = "Voting is OPEN";
             badge.className = "status-badge ongoing";
-            badge.style.backgroundColor = "#2ecc71";
-            badge.style.color = "#white";
         }
-        if (btnOpen) { btnOpen.disabled = true; btnOpen.style.opacity = '0.5'; }
-        if (btnAnnounce) { btnAnnounce.disabled = true; btnAnnounce.style.opacity = '0.5'; }
+        if (btnOpen) { btnOpen.disabled = true; btnOpen.classList.add('btn-locked'); btnOpen.classList.remove('btn-active'); }
+        if (btnAnnounce) { btnAnnounce.disabled = true; btnAnnounce.classList.add('btn-locked'); btnAnnounce.classList.remove('btn-active'); }
     } else if (status === 'closed') {
         if (badge) {
             badge.innerText = "Voting is CLOSED";
-            badge.className = "status-badge";
-            badge.style.backgroundColor = "#e32b1bff";
-            badge.style.color = "white";
+            badge.className = "status-badge concluded"; // Reusing concluded for red style if defined, or just status-badge
         }
-        if (btnOpen) { btnOpen.disabled = true; btnOpen.style.opacity = '0.5'; }
-        if (btnClose) { btnClose.disabled = true; btnClose.style.opacity = '0.5'; }
+        if (btnOpen) { btnOpen.disabled = true; btnOpen.classList.add('btn-locked'); btnOpen.classList.remove('btn-active'); }
+        if (btnClose) { btnClose.disabled = true; btnClose.classList.add('btn-locked'); btnClose.classList.remove('btn-active'); }
     } else if (status === 'concluded') {
         if (badge) {
             badge.innerText = "Election Concluded";
-            badge.className = "status-badge";
-            badge.style.backgroundColor = "#0055a4";
-            badge.style.color = "white";
+            badge.className = "status-badge concluded";
         }
-        if (btnOpen) { btnOpen.disabled = true; btnOpen.style.opacity = '0.5'; }
-        if (btnClose) { btnClose.disabled = true; btnClose.style.opacity = '0.5'; }
-        if (btnAnnounce) { btnAnnounce.disabled = true; btnAnnounce.style.opacity = '0.5'; }
+        if (btnOpen) { btnOpen.disabled = true; btnOpen.classList.add('btn-locked'); btnOpen.classList.remove('btn-active'); }
+        if (btnClose) { btnClose.disabled = true; btnClose.classList.add('btn-locked'); btnClose.classList.remove('btn-active'); }
+        if (btnAnnounce) { btnAnnounce.disabled = true; btnAnnounce.classList.add('btn-locked'); btnAnnounce.classList.remove('btn-active'); }
     }
 
     // Disable add candidate features if not upcoming
@@ -176,12 +168,12 @@ function renderElectionStatus() {
     if (btnAddCand) {
         if (status !== 'upcoming') {
             btnAddCand.disabled = true;
-            btnAddCand.style.opacity = '0.5';
+            btnAddCand.classList.add('btn-locked');
             btnAddCand.innerHTML = '<i class="fas fa-lock"></i> Adding Locked';
             btnAddCand.title = 'Cannot add candidates while the election is active or concluded.';
         } else {
             btnAddCand.disabled = false;
-            btnAddCand.style.opacity = '1';
+            btnAddCand.classList.remove('btn-locked');
             btnAddCand.innerHTML = '<i class="fas fa-plus"></i> Add Candidate';
             btnAddCand.title = '';
         }
@@ -301,7 +293,7 @@ function renderAnnouncementsList() {
     tbody.innerHTML = '';
 
     if (announcements.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: #888; padding: 20px;">No active announcements.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="3" class="table-empty-msg">No active announcements.</td></tr>';
         return;
     }
 
@@ -309,12 +301,12 @@ function renderAnnouncementsList() {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>
-                <div style="font-weight: 700; color: #1e293b; margin-bottom: 4px;">${ann.title}</div>
-                <div style="font-size: 0.8em; color: #94a3b8;">${new Date(ann.date).toLocaleDateString()}</div>
+                <div class="announcement-title-cell">${ann.title}</div>
+                <div class="announcement-date-text">${new Date(ann.date).toLocaleDateString()}</div>
             </td>
-            <td style="max-width: 300px; color: #64748b; font-size: 0.9em;">${ann.content.substring(0, 100)}${ann.content.length > 100 ? '...' : ''}</td>
+            <td class="announcement-content-cell">${ann.content.substring(0, 100)}${ann.content.length > 100 ? '...' : ''}</td>
             <td>
-                <button class="btn btn-danger" style="padding:8px 12px; font-size:0.85em; border:none; border-radius:6px; cursor:pointer;" onclick="deleteAnnouncement('${ann.id}')">
+                <button class="btn btn-danger announcement-action-btn" onclick="deleteAnnouncement('${ann.id}')">
                     <i class="fas fa-trash"></i>
                 </button>
             </td>
@@ -371,7 +363,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebarRole = document.getElementById('sidebarUserRole');
     if (sidebarRole) {
         sidebarRole.innerText = "Administrator";
-        sidebarRole.style.color = "#cbd5e1";
     }
     if (document.getElementById('candidateTableBody')) {
         renderCandidatesList();

@@ -44,28 +44,16 @@ function loadCandidatesData() {
     const banner = document.getElementById('countdownBanner');
     if (status === 'concluded') {
         banner.innerHTML = 'Election Concluded';
-        banner.style.background = '#e74c3c';
+        banner.className = 'banner-badge banner-concluded';
     } else if (status === 'closed') {
         banner.innerHTML = 'VOTING CLOSED';
-        banner.style.background = 'red';
-        banner.style.color = '#fff';
-        banner.style.borderRadius = '10px';
-        banner.style.fontSize = '0.95rem';
-        banner.style.padding = '6px 10px';  
+        banner.className = 'banner-badge banner-closed';
     } else if (isVotingOpen) {
         banner.innerHTML = 'VOTING OPEN';
-        banner.style.background = '#2ecc71';
-        banner.style.color = '#fff';
-        banner.style.borderRadius = '10px';
-        banner.style.fontSize = '0.95rem';
-        banner.style.padding = '6px 10px';  
+        banner.className = 'banner-badge banner-open';
     } else {
         banner.innerHTML = 'Election Not Started';
-        banner.style.background = '#ffd700';
-        banner.style.color = '#856600';
-        banner.style.borderRadius = '10px';
-        banner.style.fontSize = '0.95rem';
-        banner.style.padding = '6px 10px';  
+        banner.className = 'banner-badge banner-upcoming';
     }
 
     // Render Candidates
@@ -82,7 +70,7 @@ function loadCandidatesData() {
         container.innerHTML = ''; // Clear default
 
         if (candidates.length === 0) {
-            container.innerHTML = '<p style="color:#666; font-size:1.1em; text-align: center; padding: 40px;">No candidates have been registered yet.</p>';
+            container.innerHTML = '<p class="no-candidates-msg">No candidates have been registered yet.</p>';
             return;
         }
 
@@ -125,20 +113,14 @@ function loadCandidatesData() {
         existingPositions.forEach(pos => {
             const posWrapper = document.createElement('div');
             posWrapper.className = 'position-group';
-            posWrapper.style.marginBottom = '50px';
             
             const posTitle = document.createElement('h3');
-            posTitle.style.borderBottom = '3px solid #0055a4';
-            posTitle.style.paddingBottom = '10px';
-            posTitle.style.color = '#090969ff';
-            posTitle.style.display = 'inline-block';
-            posTitle.style.textTransform = 'uppercase';
-            posTitle.style.letterSpacing = '1px';
+            posTitle.className = 'position-title';
             posTitle.innerText = pos;
             
             const posGrid = document.createElement('div');
-            posGrid.className = 'candidates-grid'; 
-            posGrid.style.marginTop = '20px';
+            posGrid.className = 'candidates-grid position-grid-mt'; 
+            // Note: position-grid-mt is just marginTop: 20px, I'll add it to dashboard.css if not there
             
             const candsInPos = candidates.filter(c => c.position === pos);
             const maxVotes = Math.max(...candsInPos.map(c => c.votes || 0));
@@ -155,41 +137,37 @@ function loadCandidatesData() {
                 if (status === 'concluded') {
                     const isWinner = cand.isWinner === true;
                     if (isWinner) { 
-                        winnerBadge = '<div class="winner-badge" style="background:#2ecc71; color:white;">WINNER</div>';
-                        card.style.borderTop = "5px solid #2ecc71";
+                        winnerBadge = '<div class="winner-badge winner-badge-concluded">WINNER</div>';
+                        card.classList.add('card-concluded-winner');
                     } else {
-                        card.style.opacity = '0.6'; // dim the non-winners
+                        card.classList.add('card-dimmed');
                     }
                 } else if (canSeeLiveVotes && maxVotes > 0 && (cand.votes || 0) === maxVotes) {
                     // Highlight the current leader before conclusion
-                    winnerBadge = '<div style="position:absolute; top:0; left:0; background:#f1c40f; color:#856600; padding:4px 12px; font-size:0.75em; font-weight:800; border-bottom-right-radius:10px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1);"> CURRENT LEADER</div>';
-                    card.style.border = "2px solid #f1c40f";
-                    card.style.boxShadow = "0 8px 20px rgba(241, 196, 15, 0.15)";
+                    winnerBadge = '<div class="leader-badge"> CURRENT LEADER</div>';
+                    card.classList.add('card-leader');
                 }
 
-                let voteBadge = canSeeLiveVotes ? `<div class="cand-votes" style="background:#e74c3c; color:white; font-weight:bold; display:inline-block; padding:5px 15px; border-radius:20px; margin-bottom:10px; font-size:0.9em;"> ${cand.votes || 0} Votes</div>` : '';
+                let voteBadge = canSeeLiveVotes ? `<div class="cand-votes cand-votes-badge"> ${cand.votes || 0} Votes</div>` : '';
 
                 let voteButtonHtml = '';
                 let isSelected = window.draftBallot[cand.position] === cand.id;
 
                 if (status !== 'concluded' && isVotingOpen) {
                     if (hasVotedGlobally) {
-                        voteButtonHtml = `<button disabled style="margin-top:15px; width:100%; background: #bdc3c7; color: #fff; border:none; padding:10px; border-radius:5px; cursor:not-allowed; font-weight:bold;"> Voted</button>`;
+                        voteButtonHtml = `<button disabled class="btn-vote btn-vote-voted"> Voted</button>`;
                     } else if (isSelected) {
-                        card.style.borderTop = "none";
-                        card.style.border = "3px solid #2ecc71";
-                        card.style.boxShadow = "0 8px 20px rgba(46, 204, 113, 0.25)";
-                        card.style.transform = "scale(1.02)";
-                        voteButtonHtml = `<button onclick="selectCandidate('${cand.id}', '${cand.position}')" style="margin-top:15px; width:100%; background: #2ecc71; color: #fff; border:none; padding:10px; border-radius:5px; cursor:pointer; font-weight:bold; transition: background 0.3s;"><i class="fas fa-check"></i> Selected</button>`;
+                        card.classList.add('card-selected');
+                        voteButtonHtml = `<button onclick="selectCandidate('${cand.id}', '${cand.position}')" class="btn-vote btn-vote-selected"><i class="fas fa-check"></i> Selected</button>`;
                     } else {
-                        voteButtonHtml = `<button onclick="selectCandidate('${cand.id}', '${cand.position}')" style="margin-top:15px; width:100%; background: #0055a4; color: #fff; border:none; padding:10px; border-radius:5px; cursor:pointer; font-weight:bold; transition: background 0.3s;"> Select for ${cand.position}</button>`;
+                        voteButtonHtml = `<button onclick="selectCandidate('${cand.id}', '${cand.position}')" class="btn-vote btn-vote-select"> Select for ${cand.position}</button>`;
                     }
                 } else if (status === 'closed') {
-                    voteButtonHtml = `<button disabled style="margin-top:15px; width:100%; background: #f39c12; color: #fff; border:none; padding:10px; border-radius:5px; cursor:not-allowed; font-weight:bold;">Voting Closed</button>`;
+                    voteButtonHtml = `<button disabled class="btn-vote btn-vote-closed">Voting Closed</button>`;
                 } else if (status === 'concluded') {
-                    voteButtonHtml = `<button disabled style="margin-top:15px; width:100%; background: #bdc3c7; color: #fff; border:none; padding:10px; border-radius:5px; cursor:not-allowed; font-weight:bold;">Final Result</button>`;
+                    voteButtonHtml = `<button disabled class="btn-vote btn-vote-result">Final Result</button>`;
                 } else {
-                    voteButtonHtml = `<button disabled style="margin-top:15px; width:100%; background: #bdc3c7; color: #fff; border:none; padding:10px; border-radius:5px; cursor:not-allowed; font-weight:bold;">Voting Not Started</button>`;
+                    voteButtonHtml = `<button disabled class="btn-vote btn-vote-upcoming">Voting Not Started</button>`;
                 }
 
                 const avatarSrc = cand.photo ? cand.photo : `https://ui-avatars.com/api/?name=${encodeURIComponent(cand.name)}&background=random`;
@@ -197,14 +175,14 @@ function loadCandidatesData() {
                 card.innerHTML = `
                     ${winnerBadge}
                     <div class="cand-avatar">
-                        <img src="${avatarSrc}" alt="${cand.name}" style="object-fit:cover;">
+                        <img src="${avatarSrc}" alt="${cand.name}" class="cand-avatar-img-fit">
                     </div>
                     ${voteBadge}
                     <div class="cand-info">
                         <h4>${cand.name}</h4>
                         ${cand.college ? `<span class="college">${cand.college}</span>` : ''}
                         <span class="cand-party">${cand.party}</span>
-                        ${cand.quote ? `<p class="cand-quote" style="margin-top: 10px;">"${cand.quote}"</p>` : ''}
+                        ${cand.quote ? `<p class="cand-quote cand-quote-mt">"${cand.quote}"</p>` : ''}
                         ${voteButtonHtml}
                     </div>
                 `;
@@ -303,11 +281,11 @@ function syncSidebarUI() {
         const avatars = document.querySelectorAll('.sidebar-avatar');
         avatars.forEach(img => {
             img.src = savedPhoto;
-            img.style.objectFit = 'cover';
+            img.classList.add('sidebar-avatar-fit');
         });
         document.querySelectorAll('.profile-icon img').forEach(img => {
             img.src = savedPhoto;
-            img.style.objectFit = 'cover';
+            img.classList.add('sidebar-avatar-fit');
         });
     }
 }
