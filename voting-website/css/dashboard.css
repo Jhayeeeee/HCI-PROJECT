@@ -130,7 +130,7 @@ body {
 }
 
 .sidebar-footer {
-    background-color: red;
+    background-color: rgb(237, 36, 36);
     padding: 20px 25px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
@@ -151,7 +151,7 @@ body {
 
 .sidebar-footer:hover {
     color: #0d0101;
-    background-color: rgb(171, 31, 31);
+    background-color: rgb(198, 27, 27);
     border-radius: 6px;
     padding-left: 5px;
 }
@@ -364,31 +364,47 @@ body {
     color: #64748b;
     border: none;
     padding: 15px 35px;
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 1.1em;
     font-weight: 700;
     cursor: not-allowed;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
     margin: 0 auto;
     width: 100%;
-    max-width: 270px;
-    transition: all 0.3s ease;
+    max-width: 300px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.vote-button.active-vote {
-    background-color: #0055a4;
-    color: #ffffff;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 85, 164, 0.2);
+.vote-button.active-vote, 
+.vote-btn-concluded, 
+.vote-btn-voted {
+    background: linear-gradient(135deg, #0055a4 0%, #003366 100%) !important;
+    color: #ffffff !important;
+    cursor: pointer !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 85, 164, 0.3), 0 4px 6px -2px rgba(0, 85, 164, 0.05);
 }
 
-.vote-button.active-vote:hover {
+.vote-button.active-vote:hover, 
+.vote-btn-concluded:hover, 
+.vote-btn-voted:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 85, 164, 0.3);
+    box-shadow: 0 8px 15px -3px rgba(0, 85, 164, 0.3);
+    background: linear-gradient(135deg, #004a8f 0%, #002d5a 100%) !important;
 }
+
+.vote-button.active-vote:active, 
+.vote-btn-concluded:active, 
+.vote-btn-voted:active {
+    transform: translateY(0);
+}
+
+/* Redundant animation removed */
 
 /* Side Content */
 .side-content {
@@ -519,8 +535,8 @@ body {
 }
 
 .cand-avatar img {
-    width: 90px;
-    height: 90px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     margin-bottom: 15px;
     border: 4px solid #f8f9fa;
@@ -721,13 +737,7 @@ body {
                 color: #333;
                 font-weight: 600;
             }
-            .vote-button{
-                background-color: #0055a4;
-                cursor: pointer;
-            }
-            .vote-button:hover{
-                background-color: #033a66;
-            }
+            /* Redundant styles removed */
 
 /* --- HISTORY DESIGN --- */
 .history-card {
@@ -764,13 +774,7 @@ body {
             .history-card { flex-direction: column; align-items: flex-start; gap: 15px; }
             .history-meta { text-align: left; }
         }
-        .vote-button{
-            background-color: #0055a4;
-            cursor: pointer;
-        }
-        .vote-button:hover{
-            background-color: #033a66;
-        }
+        /* Redundant styles removed */
 
 /* Specific Page Overrides */
 .sidebar-header .portal-name {
@@ -913,11 +917,7 @@ body {
     color: #e74c3c;
 }
 
-.vote-btn-concluded {
-    background: #0055a4 !important;
-    color: #fff !important;
-    cursor: pointer !important;
-}
+/* Styles handled in primary section */
 
 .vote-btn-voted {
     background: #0055a4 !important;
@@ -978,6 +978,19 @@ body {
     margin-top: 20px;
     display: inline-block;
     text-decoration: none;
+    background: #f8f9fa;
+    color: #0055a4;
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: 2px solid #0055a4;
+    transition: all 0.3s ease;
+}
+
+.btn-go-back:hover {
+    background: #0055a4;
+    color: #fff;
+    transform: translateX(-5px);
 }
 
 .results-section-title {

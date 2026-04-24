@@ -1,5 +1,5 @@
 // Update the count down every 1 second
-const x = setInterval(function() {
+function updateCountdown() {
     let status = localStorage.getItem('electionStatus') || 'upcoming';
     
     const startStr = localStorage.getItem('electionStartTime') || "2026-12-31T08:00";
@@ -91,9 +91,19 @@ const x = setInterval(function() {
         }
     }
     
-    // Auto-refresh dynamic dashboard state every second
+    // Auto-refresh dynamic dashboard state
     loadDashboardData();
-}, 1000);
+}
+
+const x = setInterval(updateCountdown, 1000);
+
+// Real-time synchronization across tabs
+window.addEventListener('storage', (e) => {
+    if (e.key === 'electionStatus' || e.key === 'electionAnnouncements' || e.key === 'electionStartTime' || e.key === 'electionTargetTime') {
+        loadDashboardData();
+        loadAnnouncements();
+    }
+});
 
 // Load data from Admin Panel
 function loadDashboardData() {
@@ -110,15 +120,15 @@ function loadDashboardData() {
         }
 
         if (voteBtn) {
-            voteBtn.disabled = false; // Enable to send to results
-            voteBtn.className = "vote-button";
-            voteBtn.style.background = "#0055a4";
-            voteBtn.style.color = "#fff";
-            voteBtn.style.cursor = "pointer";
-            voteBtn.innerHTML = "View Election Results";
+            voteBtn.disabled = false;
+            voteBtn.className = "vote-button vote-btn-concluded";
+            voteBtn.innerHTML = "<i class='fas fa-chart-bar'></i> View Election Results";
             voteBtn.onclick = () => window.location.href = 'pages/results.html';
             
-            document.getElementById("countdown").innerHTML = "<div class='voting-open-msg voting-ended-msg'>ELECTION HAS ENDED</div>";
+            const countdownEl = document.getElementById("countdown");
+            if (countdownEl) {
+                countdownEl.innerHTML = "<div class='voting-open-msg voting-ended-msg'>ELECTION HAS ENDED</div>";
+            }
         }
         
         if (badge) {
@@ -199,6 +209,7 @@ function loadAnnouncements() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    updateCountdown(); // Run immediately to avoid 1s delay
     loadDashboardData();
     loadAnnouncements();
 });

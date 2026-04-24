@@ -2,7 +2,7 @@ window.draftBallot = window.draftBallot || {};
 window.existingPositionsGlobal = [];
 
 // Auto-check for election closure or admin remote status change
-setInterval(() => {
+function checkElectionTimeout() {
     let status = localStorage.getItem('electionStatus');
     if (status === 'open') {
         const savedTargetStr = localStorage.getItem('electionTargetTime') || "2026-03-10T08:00";
@@ -28,7 +28,16 @@ setInterval(() => {
         loadCandidatesData();
     }
     window.lastKnownStatus = localStorage.getItem('electionStatus');
-}, 1000);
+}
+
+setInterval(checkElectionTimeout, 1000);
+
+// Real-time synchronization across tabs
+window.addEventListener('storage', (e) => {
+    if (e.key === 'electionCandidates' || e.key === 'electionStatus' || e.key === 'electionTargetTime') {
+        loadCandidatesData();
+    }
+});
 
 // Load data from Admin Panel
 function loadCandidatesData() {
@@ -196,7 +205,10 @@ function loadCandidatesData() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', loadCandidatesData);
+document.addEventListener('DOMContentLoaded', () => {
+    checkElectionTimeout(); // Run immediately to avoid delay
+    loadCandidatesData();
+});
 
 window.selectCandidate = function(id, position) {
     if (window.draftBallot[position] === id) {

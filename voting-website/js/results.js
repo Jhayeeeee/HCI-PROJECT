@@ -118,6 +118,13 @@ function syncSidebarUI() {
 checkAuthAndStatus();
 setInterval(checkAuthAndStatus, 1000);
 
+// Real-time synchronization across tabs
+window.addEventListener('storage', (e) => {
+    if (e.key === 'electionCandidates' || e.key === 'electionStatus') {
+        loadResultsData();
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     syncSidebarUI();
     loadResultsData();
